@@ -1,7 +1,7 @@
 <?php
 //membuat file header.php dengan bootstrap cdn dan jquer cdn
 //include from base url config/connect.php
-include ($_SERVER['DOCUMENT_ROOT'].'/khp/config/connect.php');
+include ($_SERVER['DOCUMENT_ROOT'].'/khs/config/connect.php');
 //membuat variable kosong
 $username = "";
 $password = "";
@@ -77,20 +77,21 @@ if(isset($_SESSION['username'])){
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
+                <li class="nav-item ">
                     <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <?php if(isset($_SESSION['username'])){ ?>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Link</a>
                 </li>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown" id="li_data">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown
+                    Data
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
+                    <!-- jika url sama dengan href maka dropdown aktiv -->
+                    <a class="dropdown-item <?php if($_SERVER['REQUEST_URI'] == "/khs/admin/mahasiswa/"){echo "active";} ?>" href="<?php echo "http://".$_SERVER['HTTP_HOST'].'/khs/admin/mahasiswa';?>">Mahasiswa</a>
+                    <a class="dropdown-item <?php if($_SERVER['REQUEST_URI'] == "/khs/admin/dosen/"){echo "active";} ?>" href="<?php echo "http://".$_SERVER['HTTP_HOST'].'/khs/admin/dosen';?>">Dosen</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">Something else here</a>
                     </div>

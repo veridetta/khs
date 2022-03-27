@@ -1,7 +1,7 @@
 <?php
 //page update data mahasiswa
 //include file connect.php
-include "../../config/connect.php";
+include "../../../config/connect.php";
 //handel post
 if(isset($_POST['tipe'])){
     //mengambil data dari form

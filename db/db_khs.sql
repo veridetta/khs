@@ -178,8 +178,8 @@ INSERT INTO `nilai` (`id`, `kode_prodi`, `kode_mk`, `tahun_ajaran`, `semester`, 
 
 /*membuat table dosen*/
 CREATE TABLE `dosen` (
-  `id_dosen` int(11) NOT NULL,
-  `nama_dosen` varchar(50) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nama` varchar(50) NOT NULL,
   `nip` varchar(50) NOT NULL,
   `alamat` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
@@ -187,10 +187,11 @@ CREATE TABLE `dosen` (
   `username` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
   `status` varchar(50) NOT NULL,
-  `kode_prodi` int(11) NOT NULL,
+  `kode_prodi` varchar(50) NOT NULL,
   /*id mk*/
-  `kode_mk` int(11) NOT NULL,
-  PRIMARY KEY (`id_dosen`)
+  `kode_mk` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 

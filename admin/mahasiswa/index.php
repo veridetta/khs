@@ -1,14 +1,16 @@
 <?php
 //include config/connect.php
-include "../config/connect.php";
+include "../../config/connect.php";
 //include file header.php
-include "../include/header.php";
+include "../../include/header.php";
 //membuat variable kosong
 $username = "";
 $password = "";
 $nama = "";
 $level = "";
-
+include "../../include/session_checker.php";
+//call function on session_checker.php
+session_checker();
 //cek jika sudah ada session
 if(isset($_SESSION['username'])){
     //jika sudah ada session maka akan menjalankan perintah dibawah
@@ -79,7 +81,7 @@ if(isset($_SESSION['username'])){
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <div class="container" style="padding: 12px;">
+    <div class="container col-12" style="padding: 12px;">
         <div class="row">
             <!-- menampilkan data menggunakan boostrap datatables server side -->
             <div class="col-md-12">
@@ -110,7 +112,7 @@ if(isset($_SESSION['username'])){
 </body>
 </html>
 <?php
-include '../include/footer.php';
+include '../../include/footer.php';
 ?>
 </body>
 <!-- membuat modal ubah data mahasiswa nim, nama, kelas, jurusan -->
@@ -230,7 +232,7 @@ include '../include/footer.php';
             "processing": true,
             "serverSide": true,
             "ajax": {
-                "url":"data/mahasiswa.php",
+                "url":"data/get_mahasiswa.php",
                 "data": function(d) {
                     d.id = $('#id').val();
                     d.nim = $('#nim').val();
@@ -246,7 +248,7 @@ include '../include/footer.php';
                 $('td:eq(0)',nRow).html(index);
                 $('td:eq(6)',nRow).html(`
                     <a href="edit.php?id=${aData[1]}" class="btn btn-warning btn-sm editUser" data-toggle='modal' data-target='#updateModal' >Edit</a>
-                    <a href="#" class="btn btn-danger btn-sm btn_hapus" >Hapus</a>
+                    <a href="#" id="${aData[1]}" class="btn btn-danger btn-sm btn_hapus" >Hapus</a>
                 `);
                 //set id iinput
                 $('#id').val(aData[1]);
@@ -350,16 +352,23 @@ include '../include/footer.php';
                                 url: 'data/mahasiswa_hapus.php',
                                 type: 'POST',
                                 data: {
-                                    id: id,
-                                    ids: ids
+                                    id: $(this).attr('id')
                                 },
                                 success: function(data) {
-                                    //swal berhasil
-                                    swal("Data berhasil dihapus!", {
-                                        icon: "success",
-                                    });
-                                    //reload table
-                                    $('#table_mahasiswa').DataTable().ajax.reload();
+                                    //jika data.status = success
+                                    if (data.status == 'success') {
+                                        swal("Data berhasil dihapus!", {
+                                            icon: "success",
+                                        });
+                                        //refresh table
+                                        $('#table_mahasiswa').DataTable().ajax.reload();
+                                    } else {
+                                        swal("Data gagal dihapus!", {
+                                            icon: "error",
+                                            //rincian
+                                            text: data.error
+                                        });
+                                    }
                                 }
                             });
                         }
@@ -391,7 +400,12 @@ include '../include/footer.php';
                 data: $('#form_add').serialize(),
                 success: function(data) {
                     $('#tambahModal').modal('hide');
-                    $('#table_mahasiswa').DataTable().ajax.reload();
+                    //swal then reload
+                    swal("Data berhasil ditambahkan!", {
+                        icon: "success",
+                    }).then(function() {
+                        $('#table_mahasiswa').DataTable().ajax.reload();
+                    });
                 }
             });
         });

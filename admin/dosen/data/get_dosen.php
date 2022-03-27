@@ -1,6 +1,8 @@
 <?php
+//type json
+header('Content-Type: application/json');
 //include file connect.php
-include "../../config/connect.php";
+include "../../../config/connect.php";
 //tables
 $table = 'dosen';
 //primary keys
@@ -8,12 +10,13 @@ $primaryKey='id';
 
 $columns = array(
     array( 'db' => 'id', 'dt' => 1 ),
-    array( 'db' => 'nip', 'dt' => 2 ),
-    array( 'db' => 'nama', 'dt' => 3 ),
+    array( 'db' => 'nip', 'dt' => 3 ),
+    array( 'db' => 'nama', 'dt' => 2 ),
     array( 'db' => 'alamat', 'dt' => 4 ),
-    array( 'db' => 'email', 'dt' => 5 ),
-    array( 'db' => 'no_telp', 'dt' => 6 ),
-    array( 'db' => 'status', 'dt' => 7 ),
+    array( 'db' => 'no_telp', 'dt' => 5 ),
+    array( 'db' => 'email', 'dt' => 6 ),
+    array( 'db' => 'kode_prodi', 'dt' => 7 ),
+    array( 'db' => 'kode_mk', 'dt' => 8 )
 );
 //sql details
 $sql_details = array(
@@ -22,7 +25,7 @@ $sql_details = array(
     'db'   => $db,
     'host' => $host
 );
-require( '../../config/ssp.class.php' );
+require( '../../../config/ssp.class.php' );
 
 //echo json encode
 echo json_encode(

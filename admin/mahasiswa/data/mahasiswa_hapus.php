@@ -1,7 +1,9 @@
 <?php
 //hapus data mahasiswa
 //include file connect.php
-include "../../config/connect.php";
+//type json 
+header('Content-Type: application/json');
+include "../../../config/connect.php";
 // jika ada S_POST
 if(isset($_POST['id'])){
     //mengambil data dari form
@@ -13,13 +15,17 @@ if(isset($_POST['id'])){
     //jika berhasil
     if($query){
         //maka akan menjalankan perintah dibawah
-       //return json
-         echo json_encode(array("status" => TRUE));
+       //return json status success
+       echo json_encode(array('status'=>'success'));
+
     }
     //jika gagal
     else{
         //maka akan menjalankan perintah dibawah
         //return json
-        echo json_encode(array('errorMsg' => 'Some errors occured.'));
+         //jika gagal json
+         echo json_encode(array('status'=>'failed', 
+         //menampilkan log error
+         'error'=>mysqli_error($connect)));
     }
 }

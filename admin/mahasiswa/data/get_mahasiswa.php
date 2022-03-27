@@ -1,6 +1,6 @@
 <?php
 //include file connect.php
-include "../../config/connect.php";
+include "../../../config/connect.php";
 //tables
 $table = 'mahasiswa';
 //primary keys
@@ -20,7 +20,7 @@ $sql_details = array(
     'db'   => $db,
     'host' => $host
 );
-require( '../../config/ssp.class.php' );
+require( '../../../config/ssp.class.php' );
 
 //echo json encode
 echo json_encode(

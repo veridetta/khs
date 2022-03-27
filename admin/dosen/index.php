@@ -8,7 +8,10 @@ $username = "";
 $password = "";
 $nama = "";
 $level = "";
-
+//include session_checker.php
+include "../../include/session_checker.php";
+//panggil fungsi session
+session_checker();
 //cek jika sudah ada session
 if(isset($_SESSION['username'])){
     //jika sudah ada session maka akan menjalankan perintah dibawah
@@ -79,7 +82,7 @@ if(isset($_SESSION['username'])){
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <div class="container" style="padding: 12px;">
+    <div class="container col-12" style="padding: 12px;">
         <div class="row">
             <!-- menampilkan data menggunakan boostrap datatables server side -->
             <div class="col-md-12">
@@ -111,11 +114,6 @@ if(isset($_SESSION['username'])){
             </div>
         </div>
     </div>
-</body>
-</html>
-<?php
-include '../../include/footer.php';
-?>
 </body>
 <!-- membuat modal ubah data dosen -->
 <div class="modal fade" id="modal-ubah">
@@ -151,36 +149,36 @@ include '../../include/footer.php';
                     </div>
                     <div class="form-group">
                         <label for="prodi">Prodi</label>
-                        <select class="form-control" id="prodi" name="prodi">
+                        <select class="form-control" id="prodi" name="kode_prodi">
                             <option value="">Pilih Prodi</option>
                             <?php
                             $query = "SELECT * FROM prodi";
-                            $result = mysqli_query($conn, $query);
+                            $result = mysqli_query($connect, $query);
                             while ($row = mysqli_fetch_assoc($result)) {
-                                echo '<option value="' . $row['id_prodi'] . '">' . $row['nama_prodi'] . '</option>';
+                                echo '<option value="' . $row['kode_prodi'] . '">' . $row['nama'] . '</option>';
                             }
                             ?>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="matkul">Matkul</label>
-                        <select class="form-control" id="matkul" name="matkul">
+                        <select class="form-control" id="matkul" name="kode_mk">
                             <option value="">Pilih Matkul</option>
                             <?php
-                            $query = "SELECT * FROM matkul";
-                            $result = mysqli_query($conn, $query);
+                            $query = "SELECT * FROM mata_kuliah";
+                            $result = mysqli_query($connect, $query);
                             while ($row = mysqli_fetch_assoc($result)) {
-                                echo '<option value="' . $row['id_matkul'] . '">' . $row['nama_matkul'] . '</option>';
+                                echo '<option value="' . $row['kode_mk'] . '">' . $row['nama'] . '</option>';
                             }
                             ?>
                         </select>
                     </div>
-                    <input type="hidden" id="id_dosen" name="id_dosen">
+                    <input type="hidden" id="id" name="id">
                 </form>
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="btn_ubah">Save changes</button>
+                <button type="submit" class="btn btn-primary" id="btn_submit_ubah">Save changes</button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -222,27 +220,27 @@ include '../../include/footer.php';
                     </div>
                     <div class="form-group">
                         <label for="prodi">Prodi</label>
-                        <select class="form-control" id="prodi" name="prodi">
+                        <select class="form-control" id="prodi" name="kode_prodi">
                             <option value="
                             ">Pilih Prodi</option>
                             <?php
                             $query = "SELECT * FROM prodi";
-                            $result = mysqli_query($conn, $query);
+                            $result = mysqli_query($connect, $query);
                             while ($row = mysqli_fetch_assoc($result)) {
-                                echo '<option value="' . $row['id_prodi'] . '">' . $row['nama_prodi'] . '</option>';
+                                echo '<option value="' . $row['kode_prodi'] . '">' . $row['nama'] . '</option>';
                             }
                             ?>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="matkul">Matkul</label>
-                        <select class="form-control" id="matkul" name="matkul">
+                        <select class="form-control" id="matkul" name="kode_mk">
                             <option value="">Pilih Matkul</option>
                             <?php
-                            $query = "SELECT * FROM matkul";
-                            $result = mysqli_query($conn, $query);
+                            $query = "SELECT * FROM mata_kuliah";
+                            $result = mysqli_query($connect, $query);
                             while ($row = mysqli_fetch_assoc($result)) {
-                                echo '<option value="' . $row['id_matkul'] . '">' . $row['nama_matkul'] . '</option>';
+                                echo '<option value="' . $row['kode_mk'] . '">' . $row['nama'] . '</option>';
                             }
                             ?>
                         </select>
@@ -251,7 +249,7 @@ include '../../include/footer.php';
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="btn_tambah">Save changes</button>
+                <button type="submit" class="btn btn-primary" id="btn_submit_tambah">Save changes</button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -259,7 +257,6 @@ include '../../include/footer.php';
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
-
 <script>
     $(document).ready(function() {
         $.fn.dataTable.ext.errMode = 'none';
@@ -268,37 +265,45 @@ include '../../include/footer.php';
             "processing": true,
             "serverSide": true,
             "ajax": {
-                "url": "<?= base_url('admin/dosen/get_dosen.php') ?>",
-                "type": "POST"
+                "url": "data/get_dosen.php",
+                "data":function(d){
+                    d.prodi = $('#prodi').val();
+                    d.matkul = $('#matkul').val();
+                }
             },
             //tambah tombol hapus dan edit dengan fungsi
             "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
                 var index = iDisplayIndex +1;
                 $('td:eq(0)',nRow).html(index);
-                $('td:eq(6)',nRow).html(`
-                    <a href="edit.php?id=${aData[1]}" class="btn btn-warning btn-sm editUser" data-toggle='modal' data-target='#updateModal' >Edit</a>
-                    <a href="#" class="btn btn-danger btn-sm btn_hapus" >Hapus</a>
+                $('td:eq(9)',nRow).html(`
+                    <a href="edit.php?id=${aData[1]}" class="btn btn-warning btn-sm editUser" data-toggle='modal' data-target='#modal-ubah' >Edit</a>
+                    <a href="#" id="${aData[1]}" class="btn btn-danger btn-sm btn_hapus" >Hapus</a>
                 `);
                 //set id iinput
                 $('#id').val(aData[1]);
-                //set value nim dan nama mahasiswa
-                $('#nim').val(aData[2]);
-                $('#nama').val(aData[3]);
-                //set value kelas dan jurusan
-                $('#kelas').val(aData[4]);
-                $('#jurusan').val(aData[5]);
+                $('#nama').val(aData[2]);
+                $('#nip').val(aData[3]);
+                $('#alamat').val(aData[4]);
+                $('#telp').val(aData[5]);
+                $('#email').val(aData[6]);
+                $('#prodi').val(aData[7]);
+                $('#matkul').val(aData[8]);
+
                 return nRow;
             },
             //menambahkan tombol visibility, copy, csv, excel, pdf, print
             columnDefs: [
                 {
-                    targets: [0,6],
+                    targets: [0,9],
                     className: 'text-center'
                 }
             ],
             //set column yang dapat di sort
             "columns": [
                 {"orderable": false},
+                {"orderable": true},
+                {"orderable": true},
+                {"orderable": true},
                 {"orderable": true},
                 {"orderable": true},
                 {"orderable": true},
@@ -345,20 +350,25 @@ include '../../include/footer.php';
                    var dtrow = $(this).closest('tr');
                    //var id
                      var ids= dtrow.find('td:eq(1)').text();
-                     var nim = dtrow.find('td:eq(2)').text();
-                        var nama = dtrow.find('td:eq(3)').text();
-                            var kelas = dtrow.find('td:eq(4)').text();
-                                var jurusan = dtrow.find('td:eq(5)').text();
+                        var nama = dtrow.find('td:eq(2)').text();
+                        var nip = dtrow.find('td:eq(3)').text();
+                        var alamat = dtrow.find('td:eq(4)').text();
+                        var telp = dtrow.find('td:eq(5)').text();
+                        var email = dtrow.find('td:eq(6)').text();
+                        var prodi = dtrow.find('td:eq(7)').text();
+                        var matkul = dtrow.find('td:eq(8)').text();
+                        //set value
+                        $('#id').val(ids);
+                        $('#nama').val(nama);
+                        $('#nip').val(nip);
+                        $('#alamat').val(alamat);
+                        $('#no_telp').val(telp);
+                        $('#email').val(email);
+                        $('#prodi').val(prodi);
+                        $('#matkul').val(matkul);
+
                     //ubah tipe ke edit
                     $('#tipe').val('edit');
-                    //set value id
-                    $('#id').val(ids);
-                    //set value nim dan nama mahasiswa
-                    $('#nim').val(nim);
-                    $('#nama').val(nama);
-                    //set value kelas dan jurusan
-                    $('#kelas').val(kelas);
-                    $('#jurusan').val(jurusan);
 
                 });
                 //hapus data
@@ -378,19 +388,25 @@ include '../../include/footer.php';
                         if (willDelete) {
                             //ajax
                             $.ajax({
-                                url: 'data/mahasiswa_hapus.php',
+                                url: 'data/dosen_hapus.php',
                                 type: 'POST',
                                 data: {
-                                    id: id,
-                                    ids: ids
+                                    id: $(this).attr('id')
                                 },
                                 success: function(data) {
-                                    //swal berhasil
-                                    swal("Data berhasil dihapus!", {
-                                        icon: "success",
-                                    });
-                                    //reload table
-                                    $('#table_mahasiswa').DataTable().ajax.reload();
+                                    //jika data.status = success
+                                    if (data.status == 'success') {
+                                        swal("Data berhasil dihapus!", {
+                                            icon: "success",
+                                        });
+                                        //refresh table
+                                        $('#table_dosen').DataTable().ajax.reload();
+                                    } else {
+                                        swal("Data gagal dihapus!", {
+                                            icon: "error",
+                                            msg: data.error
+                                        });
+                                    }
                                 }
                             });
                         }
@@ -403,48 +419,83 @@ include '../../include/footer.php';
         $('#btn_tambah').click(function() {
             //ubah tipe ke tambah
             $('#tipe').val('tambah');
-            //set value nim dan nama mahasiswa
-            $('#nim').val('');
+            //kosongkan input
             $('#nama').val('');
-            //set value kelas dan jurusan
-            $('#kelas').val('');
-            $('#jurusan').val('');
+            $('#nip').val('');
+            $('#alamat').val('');
+            $('#no_telp').val('');
+            $('#email').val('');
+            $('#prodi').val('');
+            $('#matkul').val('');
+
             //buka modal tambah
-            $('#tambahModal').modal('show');
+            $('#modal-tambah').modal('show');
 
         });
+        //btn_submit_tambah click submit form_tambah
+        $('#btn_submit_tambah').click(function() {
+            //submit form_tambah
+            $('#form_tambah').submit();
+        });
         //btn_add click ajax
-        $('#form_add').submit(function(e) {
+        $('#form_tambah').submit(function(e) {
             e.preventDefault();
             $.ajax({
-                url: 'data/mahasiswa_tambah.php',
+                url: 'data/dosen_tambah.php',
                 type: 'POST',
-                data: $('#form_add').serialize(),
+                data: $('#form_tambah').serialize(),
                 success: function(data) {
-                    $('#tambahModal').modal('hide');
-                    $('#table_mahasiswa').DataTable().ajax.reload();
+                    $('#modal-tambah').modal('hide');
+                    //jika data.status = success
+                    if (data.status == 'success') {
+                        //swal berhasil
+                        swal("Data berhasil ditambahkan!", {
+                            icon: "success",
+                        });
+                        //reload table
+                        $('#table_dosen').DataTable().ajax.reload();
+                    } else {
+                        //swal gagal
+                        swal("Data gagal ditambahkan!", {
+                            icon: "error",
+                            //rincian
+                            text: data.error
+                        });
+                    }
                 }
             });
         });
+        //btn_submit_ubah klik form_ubah submit
+        $('#btn_submit_ubah').click(function() {
+            //submit form_ubah
+            $('#form_ubah').submit();
+        });
         //form update click ajax
-        $('#form_update').submit(function(e) {
+        $('#form_ubah').submit(function(e) {
             e.preventDefault();
             $.ajax({
-                url: 'data/mahasiswa_update.php',
+                url: 'data/dosen_update.php',
                 type: 'POST',
-                data: $('#form_update').serialize(),
+                data: $('#form_ubah').serialize(),
                 success: function(data) {
-                    $('#updateModal').modal('hide');
-                        swal({
-                            title: 'Berhasil!',
-                            text: 'Data berhasil diubah!',
-                            type: 'success',
-                            timer: 1400,
-                            showConfirmButton: false
-                            //swall callback
-                        }).then(function() {
-                            $('#table_mahasiswa').DataTable().ajax.reload();
+                    //close modal
+                    $('#modal-ubah').modal('hide');
+                    //if data.status = success
+                    if (data.status == 'success') {
+                        //swal berhasil
+                        swal("Data berhasil diubah!", {
+                            icon: "success",
                         });
+                        //reload table
+                        $('#table_dosen').DataTable().ajax.reload();
+                    } else {
+                        //swal gagal
+                        swal("Data gagal diubah!", {
+                            icon: "error",
+                            //rincian
+                            text: data.error
+                        });
+                    }
                 }
                 //on error
             }).fail(function() {
@@ -458,6 +509,9 @@ include '../../include/footer.php';
         });
     });
 </script>
+<?php
+include '../../include/footer.php';
+?>
 </html>
 
 
