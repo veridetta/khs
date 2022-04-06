@@ -59,7 +59,7 @@ if(isset($_SESSION['username'])){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Dosen Page</title>
+    <title>Prodi</title>
     <?php
     //include file assets/.php
     include "../../include/assets.php";
@@ -72,7 +72,7 @@ if(isset($_SESSION['username'])){
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Data Dosen</h3>
+                        <h3 class="card-title">Data Prodi</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -81,14 +81,8 @@ if(isset($_SESSION['username'])){
                                 <tr>
                                     <th>No</th>
                                     <th>Id</th>
-                                    <!-- data dosen-->
-                                    <th>Nama</th>
-                                    <th>NIP</th>
-                                    <th>Alamat</th>
-                                    <th>No. Telp</th>
-                                    <th>Email</th>
-                                    <th>Prodi</th>
-                                    <th>Matkul</th>
+                                    <th>Kode Prodi</th>
+                                    <th>Nama Prodi</th>
                                     <th>Aksi <button type="button" data-func="dt-add" class="btn btn-success btn-xs dt-add" id="btn_tambah" ><span class="fa fa-plus" aria-hidden="true"></span></button></th>
                                 </tr>
                             </thead>
@@ -99,148 +93,68 @@ if(isset($_SESSION['username'])){
         </div>
     </div>
 </body>
-<!-- membuat modal ubah data dosen -->
-<div class="modal fade" id="modal-ubah">
-    <div class="modal-dialog">
+<!-- membuat modal untuk ubah data prodi -->
+<div class="modal fade" id="modal_ubah">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Ubah Data Dosen</h4>
+                <h4 class="modal-title">Ubah Data Prodi</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form_ubah">
+                <form id="form_ubah" method="POST">
                     <div class="form-group">
-                        <label for="nama">Nama</label>
-                        <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama">
+                        <label for="id">Id</label>
+                        <input type="text" class="form-control" id="id" name="id" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="nip">NIP</label>
-                        <input type="text" class="form-control" id="nip" name="nip" placeholder="NIP">
+                        <label for="kode_prodi">Kode Prodi</label>
+                        <input type="text" class="form-control" id="kode_prodi" name="kode_prodi" required>
                     </div>
                     <div class="form-group">
-                        <label for="alamat">Alamat</label>
-                        <input type="text" class="form-control" id="alamat" name="alamat" placeholder="Alamat">
+                        <label for="nama_prodi">Nama Prodi</label>
+                        <input type="text" class="form-control" id="nama_prodi" name="nama_prodi" required>
                     </div>
-                    <div class="form-group">
-                        <label for="no_telp">No. Telp</label>
-                        <input type="text" class="form-control" id="no_telp" name="no_telp" placeholder="No. Telp">
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="text" class="form-control" id="email" name="email" placeholder="Email">
-                    </div>
-                    <div class="form-group">
-                        <label for="prodi">Prodi</label>
-                        <select class="form-control" id="prodi" name="kode_prodi">
-                            <option value="">Pilih Prodi</option>
-                            <?php
-                            $query = "SELECT * FROM prodi";
-                            $result = mysqli_query($connect, $query);
-                            while ($row = mysqli_fetch_assoc($result)) {
-                                echo '<option value="' . $row['kode_prodi'] . '">' . $row['nama'] . '</option>';
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="matkul">Matkul</label>
-                        <select class="form-control" id="matkul" name="kode_mk">
-                            <option value="">Pilih Matkul</option>
-                            <?php
-                            $query = "SELECT * FROM mata_kuliah";
-                            $result = mysqli_query($connect, $query);
-                            while ($row = mysqli_fetch_assoc($result)) {
-                                echo '<option value="' . $row['kode_mk'] . '">' . $row['nama'] . '</option>';
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <input type="hidden" id="id" name="id">
                 </form>
             </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="btn_submit_ubah">Save changes</button>
-            </div>
         </div>
-        <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
 </div>
-<!-- /.modal -->
-<!-- membuat modal tambah data dosen -->
-<div class="modal fade" id="modal-tambah">
-    <div class="modal-dialog">
+<!-- membuat modal untuk tambah data prodi -->
+<div class="modal fade" id="modal_tambah">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Tambah Data Dosen</h4>
+                <h4 class="modal-title">Tambah Data Prodi</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form_tambah">
+                <form id="form_tambah" method="POST">
                     <div class="form-group">
-                        <label for="nama">Nama</label>
-                        <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama">
+                        <label for="kode_prodi">Kode Prodi</label>
+                        <input type="text" class="form-control" id="kode_prodi" name="kode_prodi" required>
                     </div>
                     <div class="form-group">
-                        <label for="nip">NIP</label>
-                        <input type="text" class="form-control" id="nip" name="nip" placeholder="NIP">
+                        <label for="nama_prodi">Nama Prodi</label>
+                        <input type="text" class="form-control" id="nama_prodi" name="nama_prodi" required>
                     </div>
-                    <div class="form-group">
-                        <label for="alamat">Alamat</label>
-                        <input type="text" class="form-control" id="alamat" name="alamat" placeholder="Alamat">
-                    </div>
-                    <div class="form-group">
-                        <label for="no_telp">No. Telp</label>
-                        <input type="text" class="form-control" id="no_telp" name="no_telp" placeholder="No. Telp">
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="text" class="form-control" id="email" name="email" placeholder="Email">
-                    </div>
-                    <div class="form-group">
-                        <label for="prodi">Prodi</label>
-                        <select class="form-control" id="prodi" name="kode_prodi">
-                            <option value="
-                            ">Pilih Prodi</option>
-                            <?php
-                            $query = "SELECT * FROM prodi";
-                            $result = mysqli_query($connect, $query);
-                            while ($row = mysqli_fetch_assoc($result)) {
-                                echo '<option value="' . $row['kode_prodi'] . '">' . $row['nama'] . '</option>';
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="matkul">Matkul</label>
-                        <select class="form-control" id="matkul" name="kode_mk">
-                            <option value="">Pilih Matkul</option>
-                            <?php
-                            $query = "SELECT * FROM mata_kuliah";
-                            $result = mysqli_query($connect, $query);
-                            while ($row = mysqli_fetch_assoc($result)) {
-                                echo '<option value="' . $row['kode_mk'] . '">' . $row['nama'] . '</option>';
-                            }
-                            ?>
-                        </select>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
                 </form>
             </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="btn_submit_tambah">Save changes</button>
-            </div>
         </div>
-        <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
 </div>
-<!-- /.modal -->
 <script>
     $(document).ready(function() {
         $.fn.dataTable.ext.errMode = 'none';
@@ -249,36 +163,29 @@ if(isset($_SESSION['username'])){
             "processing": true,
             "serverSide": true,
             "ajax": {
-                "url": "data/get_dosen.php",
+                "url": "data/get.php",
                 "data":function(d){
-                    d.prodi = $('#prodi').val();
-                    d.matkul = $('#matkul').val();
+                    
                 }
             },
             //tambah tombol hapus dan edit dengan fungsi
             "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
                 var index = iDisplayIndex +1;
                 $('td:eq(0)',nRow).html(index);
-                $('td:eq(9)',nRow).html(`
-                    <a href="edit.php?id=${aData[1]}" class="btn btn-warning btn-sm editUser" data-toggle='modal' data-target='#modal-ubah' >Edit</a>
+                $('td:eq(4)',nRow).html(`
+                    <a href="edit.php?id=${aData[1]}" class="btn btn-warning btn-sm editUser" data-toggle='modal' data-target='#modal_ubah' >Edit</a>
                     <a href="#" id="${aData[1]}" class="btn btn-danger btn-sm btn_hapus" >Hapus</a>
                 `);
                 //set id iinput
                 $('#id').val(aData[1]);
-                $('#nama').val(aData[2]);
-                $('#nip').val(aData[3]);
-                $('#alamat').val(aData[4]);
-                $('#telp').val(aData[5]);
-                $('#email').val(aData[6]);
-                $('#prodi').val(aData[7]);
-                $('#matkul').val(aData[8]);
+                $('#tahun_ajaran').val(aData[2]);
 
                 return nRow;
             },
             //menambahkan tombol visibility, copy, csv, excel, pdf, print
             columnDefs: [
                 {
-                    targets: [0,9],
+                    targets: [0,4],
                     className: 'text-center'
                 }
             ],
@@ -288,12 +195,8 @@ if(isset($_SESSION['username'])){
                 {"orderable": true},
                 {"orderable": true},
                 {"orderable": true},
-                {"orderable": true},
-                {"orderable": true},
-                {"orderable": true},
-                {"orderable": true},
-                {"orderable": true},
                 {"orderable": false}
+
             ],
             //menambahkan urut
             order: [[ 0, "asc" ]],
@@ -334,23 +237,14 @@ if(isset($_SESSION['username'])){
                    var dtrow = $(this).closest('tr');
                    //var id
                      var ids= dtrow.find('td:eq(1)').text();
-                        var nama = dtrow.find('td:eq(2)').text();
-                        var nip = dtrow.find('td:eq(3)').text();
-                        var alamat = dtrow.find('td:eq(4)').text();
-                        var telp = dtrow.find('td:eq(5)').text();
-                        var email = dtrow.find('td:eq(6)').text();
-                        var prodi = dtrow.find('td:eq(7)').text();
-                        var matkul = dtrow.find('td:eq(8)').text();
+                    var kode_prodi = dtrow.find('td:eq(2)').text();
+                    var nama_prodi = dtrow.find('td:eq(3)').text();
+                    
                         //set value
                         $('#id').val(ids);
-                        $('#nama').val(nama);
-                        $('#nip').val(nip);
-                        $('#alamat').val(alamat);
-                        $('#no_telp').val(telp);
-                        $('#email').val(email);
-                        $('#prodi').val(prodi);
-                        $('#matkul').val(matkul);
-
+                        $('#kode_prodi').val(kode_prodi);
+                        $('#nama_prodi').val(nama_prodi);
+                       
                     //ubah tipe ke edit
                     $('#tipe').val('edit');
 
@@ -372,7 +266,7 @@ if(isset($_SESSION['username'])){
                         if (willDelete) {
                             //ajax
                             $.ajax({
-                                url: 'data/dosen_hapus.php',
+                                url: 'data/hapus.php',
                                 type: 'POST',
                                 data: {
                                     id: $(this).attr('id')
@@ -404,16 +298,10 @@ if(isset($_SESSION['username'])){
             //ubah tipe ke tambah
             $('#tipe').val('tambah');
             //kosongkan input
-            $('#nama').val('');
-            $('#nip').val('');
-            $('#alamat').val('');
-            $('#no_telp').val('');
-            $('#email').val('');
-            $('#prodi').val('');
-            $('#matkul').val('');
-
+            $('#kode_prodi').val('');
+            $('#nama_prodi').val('');
             //buka modal tambah
-            $('#modal-tambah').modal('show');
+            $('#modal_tambah').modal('show');
 
         });
         //btn_submit_tambah click submit form_tambah
@@ -425,11 +313,11 @@ if(isset($_SESSION['username'])){
         $('#form_tambah').submit(function(e) {
             e.preventDefault();
             $.ajax({
-                url: 'data/dosen_tambah.php',
+                url: 'data/tambah.php',
                 type: 'POST',
                 data: $('#form_tambah').serialize(),
                 success: function(data) {
-                    $('#modal-tambah').modal('hide');
+                    $('#modal_tambah').modal('hide');
                     //jika data.status = success
                     if (data.status == 'success') {
                         //swal berhasil
@@ -458,12 +346,12 @@ if(isset($_SESSION['username'])){
         $('#form_ubah').submit(function(e) {
             e.preventDefault();
             $.ajax({
-                url: 'data/dosen_update.php',
+                url: 'data/update.php',
                 type: 'POST',
                 data: $('#form_ubah').serialize(),
                 success: function(data) {
                     //close modal
-                    $('#modal-ubah').modal('hide');
+                    $('#modal_ubah').modal('hide');
                     //if data.status = success
                     if (data.status == 'success') {
                         //swal berhasil

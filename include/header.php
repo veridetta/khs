@@ -81,12 +81,22 @@ if(isset($_SESSION['username'])){
                     <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <?php if(isset($_SESSION['username'])){ ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
+                <li class="nav-item dropdown" id="li_akademik">
+                    <a class="nav-link dropdown-toggle" href="#" id="akademikDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Akademik
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="akademikDropdown">
+                    <!-- jika url sama dengan href maka dropdown aktiv -->
+                    <a class="dropdown-item <?php if($_SERVER['REQUEST_URI'] == "/khs/admin/tahun/"){echo "active";} ?>" href="<?php echo "http://".$_SERVER['HTTP_HOST'].'/khs/admin/tahun';?>">Tahun Ajaran</a>
+                    <a class="dropdown-item <?php if($_SERVER['REQUEST_URI'] == "/khs/admin/semester/"){echo "active";} ?>" href="<?php echo "http://".$_SERVER['HTTP_HOST'].'/khs/admin/semester';?>">Semester</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item <?php if($_SERVER['REQUEST_URI'] == "/khs/admin/prodi/"){echo "active";} ?>" href="<?php echo "http://".$_SERVER['HTTP_HOST'].'/khs/admin/prodi';?>">Prodi</a>
+                    <a class="dropdown-item <?php if($_SERVER['REQUEST_URI'] == "/khs/admin/matkul/"){echo "active";} ?>" href="<?php echo "http://".$_SERVER['HTTP_HOST'].'/khs/admin/matkul';?>">Matkul</a>
+                    </div>
                 </li>
                 <li class="nav-item dropdown" id="li_data">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Data
+                    Master Data
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <!-- jika url sama dengan href maka dropdown aktiv -->
