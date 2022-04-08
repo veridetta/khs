@@ -33,8 +33,14 @@ if(isset($_POST['kode_prodi'])){
     }else{
         $sks=$_POST['sks'];
     }
+    if(empty($_POST['semester'])){
+        //jika kode_prodi kosong
+        echo json_encode(array('status'=>'failed', 'message'=>'semester tidak boleh kosong'));
+    }else{
+        $semester=$_POST['sks'];
+    }
     //insert ke table matkul
-    $sql = "INSERT INTO matkul (kode_mk, nama, sks, kode_prodi) VALUES ('$kode_mk', '$nama', '$sks', '$kode_prodi')";
+    $sql = "INSERT INTO mata_kuliah (kode_mk, nama, sks, kode_prodi, semester) VALUES ('$kode_mk', '$nama', '$sks', '$kode_prodi','$semester')";
     //eksekusi query
     $eksekusi = mysqli_query($connect,$sql);
     //periksa hasil query

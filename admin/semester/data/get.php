@@ -2,17 +2,13 @@
 //include file connect.php
 include "../../../config/connect.php";
 //tables
-$table = 'mata_kuliah';
+$table = 'semester';
 //primary keys
 $primaryKey='id';
 
 $columns = array(
     array( 'db' => 'id', 'dt' => 1 ),
-    array( 'db' => 'kode_mk', 'dt' => 3 ),
-    array( 'db' => 'nama', 'dt' => 4 ),
-    array( 'db' => 'sks', 'dt' => 6 ),
-    array( 'db' => 'semester', 'dt' => 5 ),
-    array( 'db' => 'kode_prodi', 'dt' => 2 ),
+    array( 'db' => 'semester', 'dt' => 2 )
 );
 //sql details
 $sql_details = array(

@@ -35,9 +35,21 @@ if (isset($_POST['kode_prodi'])) {
     }else{
         $sks=$_POST['sks'];
     }
+    if(empty($_POST['id'])){
+        //jika kode_prodi kosong
+        echo json_encode(array('status'=>'failed', 'message'=>'Id tidak boleh kosong'));
+    }else{
+        $id=$_POST['id'];
+    }
+    if(empty($_POST['semester'])){
+        //jika kode_prodi kosong
+        echo json_encode(array('status'=>'failed', 'message'=>'semester tidak boleh kosong'));
+    }else{
+        $semester=$_POST['semester'];
+    }
     if (empty($error)) {
         //update table matkul
-        $sql = "UPDATE matkul SET kode_mk='$kode_mk', kode_prodi='$kode_prodi', nama='$nama', sks='$sks' WHERE id='$id'";
+        $sql = "UPDATE mata_kuliah SET kode_mk='$kode_mk', kode_prodi='$kode_prodi', nama='$nama', sks='$sks', semester='$semester' WHERE id='$id'";
         
         $query = mysqli_query($connect, $sql);
 

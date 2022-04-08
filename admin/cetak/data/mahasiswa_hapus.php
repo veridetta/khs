@@ -1,5 +1,5 @@
 <?php
-//hapus data dosen
+//hapus data mahasiswa
 //include file connect.php
 //type json 
 header('Content-Type: application/json');
@@ -9,7 +9,7 @@ if(isset($_POST['id'])){
     //mengambil data dari form
     $id = $_POST['id'];
     //mengambil data dari database
-    $sql = "DELETE FROM mata_kuliah WHERE id='$id'";
+    $sql = "DELETE FROM mahasiswa WHERE id='$id'";
     //menjalankan query
     $query = mysqli_query($connect, $sql);
     //jika berhasil

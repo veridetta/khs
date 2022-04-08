@@ -59,7 +59,7 @@ if(isset($_SESSION['username'])){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Matkul</title>
+    <title>Semester</title>
     <?php
     //include file assets/.php
     include "../../include/assets.php";
@@ -72,7 +72,7 @@ if(isset($_SESSION['username'])){
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Data Matkul</h3>
+                        <h3 class="card-title">Data Semester</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -81,11 +81,7 @@ if(isset($_SESSION['username'])){
                                 <tr>
                                     <th>No</th>
                                     <th>Id</th>
-                                    <th>Kode Prodi</th>
-                                    <th>Kode MK</th>
-                                    <th>Nama</th>
                                     <th>Semester</th>
-                                    <th>SKS</th>
                                     <th>Aksi <button type="button" data-func="dt-add" class="btn btn-success btn-xs dt-add" id="btn_tambah" ><span class="fa fa-plus" aria-hidden="true"></span></button></th>
                                 </tr>
                             </thead>
@@ -96,160 +92,64 @@ if(isset($_SESSION['username'])){
         </div>
     </div>
 </body>
-<!-- membuat modal untuk ubah data matkul -->
+<!-- membuat modal untuk ubah data semester-->
 <div class="modal fade" id="modal_ubah">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Ubah Data Matkul</h4>
+                <h4 class="modal-title">Ubah Data Semester</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form_ubah" method="POST">
+                <form id="form_ubah">
                     <div class="form-group">
                         <label for="id">Id</label>
                         <input type="text" class="form-control" id="id" name="id" readonly>
                     </div>
                     <div class="form-group">
-                        <!-- select kode_prodi from table prodi-->
-                        <label for="kode_prodi">Kode Prodi</label>
-                        <select class="form-control" id="kode_prodi" name="kode_prodi">
-                            <option value="">Pilih Kode Prodi</option>
-                            <?php
-                            //membuat query untuk menampilkan data dari table prodi
-                            $sql = "SELECT * FROM prodi";
-                            //menjalankan query
-                            $query = mysqli_query($connect, $sql);
-                            //menghitung jumlah data yang ditemukan
-                            $count = mysqli_num_rows($query);
-                            //jika data ditemukan maka akan menjalankan perintah dibawah
-                            if($count > 0){
-                                //melakukan perulangan untuk menampilkan data
-                                while($data = mysqli_fetch_assoc($query)){
-                                    //menampilkan data
-                                    echo "<option value='".$data['kode_prodi']."'>".$data['kode_prodi']."</option>";
-                                }
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="kode_mk">Kode MK</label>
-                        <input type="text" class="form-control" id="kode_mk" name="kode_mk" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="nama">Nama</label>
-                        <input type="text" class="form-control" id="nama" name="nama" required>
-                    </div>
-                    <!-- select form table semester-->
-                    <div class="form-group">
                         <label for="semester">Semester</label>
-                        <select class="form-control" id="semester" name="semester">
-                            <option value="">Pilih Semester</option>
-                            <?php
-                            //membuat query untuk menampilkan data dari table semester
-                            $sql = "SELECT * FROM semester";
-                            //menjalankan query
-                            $query = mysqli_query($connect, $sql);
-                            //menghitung jumlah data yang ditemukan
-                            $count = mysqli_num_rows($query);
-                            //jika data ditemukan maka akan menjalankan perintah dibawah
-                            if($count > 0){
-                                //melakukan perulangan untuk menampilkan data
-                                while($data = mysqli_fetch_assoc($query)){
-                                    //menampilkan data
-                                    echo "<option value='".$data['semester']."'>".$data['semester']."</option>";
-                                }
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="sks">SKS</label>
-                        <input type="text" class="form-control" id="sks" name="sks" required>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <input type="text" class="form-control" id="semester" name="semester">
                     </div>
                 </form>
             </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btn_submit_ubah">Save changes</button>
+            </div>
         </div>
+        <!-- /.modal-content -->
     </div>
+    <!-- /.modal-dialog -->
 </div>
-<!-- membuat modal untuk tambah data matkul -->
+<!-- /.modal -->
+<!-- membuat modal untuk tambah data semester-->
 <div class="modal fade" id="modal_tambah">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Tambah Data Matkul</h4>
+                <h4 class="modal-title">Tambah Data Semester</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form_tambah" method="POST">
-                    <div class="form-group">
-                        <!-- select from table prodi-->
-                        <label for="kode_prodi">Kode Prodi</label>
-                        <select class="form-control" id="kode_prodi" name="kode_prodi" required>
-                            <option value="">-- Pilih Prodi --</option>
-                            <?php
-                            //membuat query untuk menampilkan data dari tabel prodi
-                            $query = mysqli_query($connect, "SELECT * FROM prodi");
-                            //perulangan untuk menampilkan data
-                            while($data = mysqli_fetch_array($query)){
-                                //menampilkan data berdasarkan id
-                                echo "<option value='$data[kode_prodi]'>$data[kode_prodi] - $data[nama]</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="kode_mk">Kode MK</label>
-                        <input type="text" class="form-control" id="kode_mk" name="kode_mk" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="nama">Nama</label>
-                        <input type="text" class="form-control" id="nama" name="nama" required>
-                    </div>
-                    <!-- select form table semester-->
+                <form id="form_tambah">
                     <div class="form-group">
                         <label for="semester">Semester</label>
-                        <select class="form-control" id="semester" name="semester">
-                            <option value="">Pilih Semester</option>
-                            <?php
-                            //membuat query untuk menampilkan data dari table semester
-                            $sql = "SELECT * FROM semester";
-                            //menjalankan query
-                            $query = mysqli_query($connect, $sql);
-                            //menghitung jumlah data yang ditemukan
-                            $count = mysqli_num_rows($query);
-                            //jika data ditemukan maka akan menjalankan perintah dibawah
-                            if($count > 0){
-                                //melakukan perulangan untuk menampilkan data
-                                while($data = mysqli_fetch_assoc($query)){
-                                    //menampilkan data
-                                    echo "<option value='".$data['semester']."'>".$data['semester']."</option>";
-                                }
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="sks">SKS</label>
-                        <input type="text" class="form-control" id="sks" name="sks" required>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <input type="text" class="form-control" id="semester" name="semester">
                     </div>
                 </form>
             </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btn_submit_tambah">Save changes</button>
+            </div>
         </div>
-    </div>  
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog --> 
 </div>
 <script>
     $(document).ready(function() {
@@ -268,34 +168,26 @@ if(isset($_SESSION['username'])){
             "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
                 var index = iDisplayIndex +1;
                 $('td:eq(0)',nRow).html(index);
-                $('td:eq(7)',nRow).html(`
+                $('td:eq(3)',nRow).html(`
                     <a href="edit.php?id=${aData[1]}" class="btn btn-warning btn-sm editUser" data-toggle='modal' data-target='#modal_ubah' >Edit</a>
                     <a href="#" id="${aData[1]}" class="btn btn-danger btn-sm btn_hapus" >Hapus</a>
                 `);
                 //set id iinput
                 $('#id').val(aData[1]);
-                $('#kode_prodi').val(aData[2]);
-                $('#kode_mk').val(aData[3]);
-                $('#nama').val(aData[4]);
-                $('#sks').val(aData[6]);
-                $('#semester').val(aData[5]);
+                $('#semester').val(aData[2]);
                 
                 return nRow;
             },
             //menambahkan tombol visibility, copy, csv, excel, pdf, print
             columnDefs: [
                 {
-                    targets: [0,7],
+                    targets: [0,3],
                     className: 'text-center'
                 }
             ],
             //set column yang dapat di sort
             "columns": [
                 {"orderable": false},
-                {"orderable": true},
-                {"orderable": true},
-                {"orderable": true},
-                {"orderable": true},
                 {"orderable": true},
                 {"orderable": true},
                 {"orderable": false}
@@ -340,18 +232,12 @@ if(isset($_SESSION['username'])){
                    var dtrow = $(this).closest('tr');
                    //var id
                      var ids= dtrow.find('td:eq(1)').text();
-                    var kode_prodi = dtrow.find('td:eq(2)').text();
-                    var kode_mk = dtrow.find('td:eq(3)').text();
-                    var nama = dtrow.find('td:eq(4)').text();
-                    var sks = dtrow.find('td:eq(6)').text();
-                    var semester = dtrow.find('td:eq(5)').text();
+                
+                    var semester = dtrow.find('td:eq(2)').text();
                     
                         //set value
                         $('#id').val(ids);
-                        $('#kode_prodi').val(kode_prodi);
-                        $('#kode_mk').val(kode_mk);
-                        $('#nama').val(nama);
-                        $('#sks').val(sks);
+
                         $('#semester').val(semester);
 
                     //ubah tipe ke edit
@@ -407,11 +293,6 @@ if(isset($_SESSION['username'])){
             //ubah tipe ke tambah
             $('#tipe').val('tambah');
             //kosongkan input
-            $('#kode_prodi').val('');
-            $('#kode_mk').val('');
-            $('#nama').val('');
-            //kosongkan sks
-            $('#sks').val('');
             $('#semester').val('');
 
             //buka modal tambah

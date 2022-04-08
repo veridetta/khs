@@ -98,7 +98,7 @@ if(isset($_POST['login'])){
             $_SESSION['email'] = $email;
             
             //akan dialihkan ke halaman admin
-            header("location:../admin/index.php");
+            header("location:../admin/mahasiswa");
         }
         //jika level sama dengan user
         else if($level == "user"){

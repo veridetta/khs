@@ -63,7 +63,7 @@ if(isset($_SESSION['username'])){
         }
     }
     //membuat tombol logout pada header jika ada session
-    $status= "<a href='logout.php' class='btn btn-danger'>Logout</a>";
+    $status= "<a href='http://".$_SERVER['HTTP_HOST']."/khs/auth/logout.php' class='btn btn-danger'>Logout</a>";
 }else{
     //jika belum ada sesion maka tombol login
     $status= "<a href='login.php' class='btn btn-primary'>Login</a>";
@@ -71,7 +71,7 @@ if(isset($_SESSION['username'])){
 ?>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand" href="#">KHS</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -92,6 +92,9 @@ if(isset($_SESSION['username'])){
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item <?php if($_SERVER['REQUEST_URI'] == "/khs/admin/prodi/"){echo "active";} ?>" href="<?php echo "http://".$_SERVER['HTTP_HOST'].'/khs/admin/prodi';?>">Prodi</a>
                     <a class="dropdown-item <?php if($_SERVER['REQUEST_URI'] == "/khs/admin/matkul/"){echo "active";} ?>" href="<?php echo "http://".$_SERVER['HTTP_HOST'].'/khs/admin/matkul';?>">Matkul</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item <?php if($_SERVER['REQUEST_URI'] == "/khs/admin/nilai/"){echo "active";} ?>" href="<?php echo "http://".$_SERVER['HTTP_HOST'].'/khs/admin/nilai';?>">Nilai</a>
+                    
                     </div>
                 </li>
                 <li class="nav-item dropdown" id="li_data">
@@ -102,12 +105,10 @@ if(isset($_SESSION['username'])){
                     <!-- jika url sama dengan href maka dropdown aktiv -->
                     <a class="dropdown-item <?php if($_SERVER['REQUEST_URI'] == "/khs/admin/mahasiswa/"){echo "active";} ?>" href="<?php echo "http://".$_SERVER['HTTP_HOST'].'/khs/admin/mahasiswa';?>">Mahasiswa</a>
                     <a class="dropdown-item <?php if($_SERVER['REQUEST_URI'] == "/khs/admin/dosen/"){echo "active";} ?>" href="<?php echo "http://".$_SERVER['HTTP_HOST'].'/khs/admin/dosen';?>">Dosen</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Something else here</a>
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                    <a class="nav-link <?php if($_SERVER['REQUEST_URI'] == "/khs/admin/cetak/"){echo "active";} ?>" href="<?php echo "http://".$_SERVER['HTTP_HOST'].'/khs/admin/cetak';?>" tabindex="-1" aria-disabled="true">Cetak KHS</a>
                 </li>
                 <?php
                 }
