@@ -3,7 +3,7 @@
 $host = "localhost";
 $user = "root";
 $pass = "";
-$db = "db_khs";
+$db = "khs_db";
 $connect= mysqli_connect($host, $user, $pass, $db);
 //jika gagal koneksi akan ada pesan error
 if(!$connect){
