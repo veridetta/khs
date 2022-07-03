@@ -77,7 +77,7 @@ if(isset($_SESSION['username'])){
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <?php if($_SESSION['level'] == "admin"){ ?>
+                <?php if($level == "admin"){ ?>
                 <li class="nav-item ">
                     <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                 </li>
@@ -114,7 +114,7 @@ if(isset($_SESSION['username'])){
                 <?php
                 }
             }else{
-                echo "Selamat Datang ".$_SESSION['nama'];
+                echo "Selamat Datang ".$nama;
             }
                 ?>
             </ul>
